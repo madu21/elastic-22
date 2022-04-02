@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git checkout') {
+            steps {
+                sh 'whoami'
+                git branch: 'main', url: 'https://github.com/madu21/elastic-22.git'
+                sh 'whoami'
+            }
+        }
+        stage('ansible play-book') {
+            steps {
+                ansiblePlaybook credentialsId: 'ansible-managed', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory', playbook: 'kafka.yml'
+                sh 'whoami'
+            }
+        }
+    }
+}
+
+#### here use remote user as ansible or other any normal user and before ssh-keygen btw them
